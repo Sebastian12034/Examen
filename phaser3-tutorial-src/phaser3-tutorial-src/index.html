@@ -68,9 +68,10 @@ function create ()
     platforms.create(600, 400, 'ground');
     platforms.create(50, 250, 'ground');
     platforms.create(750, 220, 'ground');
+  
 
     // The player and its settings
-    player = this.physics.add.sprite(100, 450, 'dude');
+    player = this.physics.add.sprite(450, 450, 'dude');
 
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
@@ -123,6 +124,7 @@ function create ()
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(stars, platforms);
     this.physics.add.collider(bombs, platforms);
+    this.physics.add.collider(bombs, platforms);
 
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
     this.physics.add.overlap(player, stars, collectStar, null, this);
@@ -134,7 +136,7 @@ function update ()
 {
     if (gameOver)
     {
-        return;
+       return 3
     }
 
     if (cursors.left.isDown)
@@ -164,11 +166,13 @@ function update ()
 
 function collectStar (player, star)
 {
+    
     star.disableBody(true, true);
 
     //  Add and update the score
     score += 10;
     scoreText.setText('Score: ' + score);
+  
 
     if (stars.countActive(true) === 0)
     {
@@ -185,20 +189,17 @@ function collectStar (player, star)
         bomb.setBounce(1);
         bomb.setCollideWorldBounds(true);
         bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-        bomb.allowGravity = false;
+        bomb.allowGravity = true;
 
     }
 }
 
 function hitBomb (player, bomb)
 {
-    this.physics.pause();
-
+ 
     player.setTint(0xff0000);
-
     player.anims.play('turn');
-
-    gameOver = true;
+    gameOver = false;
 }
 
 </script>
